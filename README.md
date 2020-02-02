@@ -82,102 +82,102 @@ public class Function
 See the following example CloudFormation template to deploy the Lambda function on a 5 minute CloudWatch schedule:
 ```json
 {
-	"AWSTemplateFormatVersion": "2010-09-09",
-	"Resources": {
-		"SyntheticsFunction": {
-			"Properties": {
-				"Code": {
-					"S3Bucket": "",
-					"S3Key": ""
-				},
-				"Handler": "MyNamespace::MyNamespace.Function::FunctionHandlerAsync",
-				"MemorySize": 128,
-				"Role": {
-					"Fn::Sub": "${SyntheticsFunctionRole.Arn}"
-				},
-				"Runtime": "dotnetcore2.1",
-				"Timeout": 30
-			},
-			"Type": "AWS::Lambda::Function"
-		},
-		"SyntheticsFunctionRole": {
-			"Properties": {
-				"AssumeRolePolicyDocument": {
-					"Statement": [
-						{
-							"Action": [
-								"sts:AssumeRole"
-							],
-							"Effect": "Allow",
-							"Principal": {
-								"Service": [
-									"lambda.amazonaws.com"
-								]
-							}
-						}
-					],
-					"Version": "2012-10-17"
-				},
-				"ManagedPolicyArns": [
-					"arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-					"arn:aws:iam::aws:policy/AWSLambdaFullAccess"
-				],
-				"Policies": [
-					{
-						"PolicyName": "root",
-						"PolicyDocument": {
-							"Version": "2012-10-17",
-							"Statement": [
-								{
-									"Effect": "Allow",
-									"Action": [
-										"ses:SendEmail"
-									],
-									"Resource": "*"
-								}
-							]
-						}
-					}
-				]
-			},
-			"Type": "AWS::IAM::Role"
-		},
-		"SyntheticsRule": {
-			"Type": "AWS::Events::Rule",
-			"Properties": {
-				"ScheduleExpression": "rate(5 minutes)",
-				"Targets": [
-					{
-						"Id": "SyntheticsScheduler",
-						"Arn": {
-							"Fn::GetAtt": [
-								"SyntheticsFunction",
-								"Arn"
-							]
-						}
-					}
-				]
-			}
-		},
-		"InvokeLambdaPermission": {
-			"Type": "AWS::Lambda::Permission",
-			"Properties": {
-				"FunctionName": {
-					"Fn::GetAtt": [
-						"SyntheticsFunction",
-						"Arn"
-					]
-				},
-				"Action": "lambda:InvokeFunction",
-				"Principal": "events.amazonaws.com",
-				"SourceArn": {
-					"Fn::GetAtt": [
-						"SyntheticsRule",
-						"Arn"
-					]
-				}
-			}
-		}
-	}
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+        "SyntheticsFunction": {
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "",
+                    "S3Key": ""
+                },
+                "Handler": "MyNamespace::MyNamespace.Function::FunctionHandlerAsync",
+                "MemorySize": 128,
+                "Role": {
+                    "Fn::Sub": "${SyntheticsFunctionRole.Arn}"
+                },
+                "Runtime": "dotnetcore2.1",
+                "Timeout": 30
+            },
+            "Type": "AWS::Lambda::Function"
+        },
+        "SyntheticsFunctionRole": {
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "sts:AssumeRole"
+                            ],
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            }
+                        }
+                    ],
+                    "Version": "2012-10-17"
+                },
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+                    "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+                ],
+                "Policies": [
+                    {
+                        "PolicyName": "root",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "ses:SendEmail"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "Type": "AWS::IAM::Role"
+        },
+        "SyntheticsRule": {
+            "Type": "AWS::Events::Rule",
+            "Properties": {
+                "ScheduleExpression": "rate(5 minutes)",
+                "Targets": [
+                    {
+                        "Id": "SyntheticsScheduler",
+                        "Arn": {
+                            "Fn::GetAtt": [
+                                "SyntheticsFunction",
+                                "Arn"
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "InvokeLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Fn::GetAtt": [
+                        "SyntheticsFunction",
+                        "Arn"
+                    ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "events.amazonaws.com",
+                "SourceArn": {
+                    "Fn::GetAtt": [
+                        "SyntheticsRule",
+                        "Arn"
+                    ]
+                }
+            }
+        }
+    }
 }
 ```
