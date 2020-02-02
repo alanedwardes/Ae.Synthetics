@@ -32,7 +32,7 @@ public static class Program
     public static void Main()
     {
         var provider = new ServiceCollection()
-		    .AddSingleton<ISyntheticTest, MyTest>() // Register all synthetic tests against the ISyntheticTest interface
+            .AddSingleton<ISyntheticTest, MyTest>() // Register all synthetic tests against the ISyntheticTest interface
             .AddSyntheticsRunner(new SyntheticsRunnerConfig { SyntheticTestTimeout = TimeSpan.FromSeconds(3) })
             .AddSyntheticsSesAlerting(new SesSyntheticsAlerterConfig // Add alerting via SES
             {
@@ -58,7 +58,7 @@ public class Function
     public Stream FunctionHandlerAsync(Stream input, ILambdaContext context)
     {
         var provider = new ServiceCollection()
-		    .AddSingleton<ISyntheticTest, MyTest>() // Register all synthetic tests against the ISyntheticTest interface
+            .AddSingleton<ISyntheticTest, MyTest>() // Register all synthetic tests against the ISyntheticTest interface
             .AddSyntheticsRunner(new SyntheticsRunnerConfig { SyntheticTestTimeout = TimeSpan.FromSeconds(3) })
             .AddSyntheticsSesAlerting(new SesSyntheticsAlerterConfig // Add alerting via SES
             {
