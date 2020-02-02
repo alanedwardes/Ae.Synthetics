@@ -32,9 +32,12 @@ public static class Program
     public static void Main()
     {
         var provider = new ServiceCollection()
-            .AddSingleton<ISyntheticTest, MyTest>() // Register all synthetic tests against the ISyntheticTest interface
+			// Register all synthetic tests against the ISyntheticTest interface
+            .AddSingleton<ISyntheticTest, MyTest>()
+			// Configure the runner - ensure tests are given 3 seconds to complete
             .AddSyntheticsRunner(new SyntheticsRunnerConfig { SyntheticTestTimeout = TimeSpan.FromSeconds(3) })
-            .AddSyntheticsSesAlerting(new SesSyntheticsAlerterConfig // Add alerting via SES
+			// Add alerting of failures via Amazon SES
+            .AddSyntheticsSesAlerting(new SesSyntheticsAlerterConfig
             {
                 Recipients = new[] { "test@example.com" },
                 Sender = "synthetics@example.com"
@@ -58,9 +61,12 @@ public class Function
     public Stream FunctionHandlerAsync(Stream input, ILambdaContext context)
     {
         var provider = new ServiceCollection()
-            .AddSingleton<ISyntheticTest, MyTest>() // Register all synthetic tests against the ISyntheticTest interface
+			// Register all synthetic tests against the ISyntheticTest interface
+            .AddSingleton<ISyntheticTest, MyTest>()
+			// Configure the runner - ensure tests are given 3 seconds to complete
             .AddSyntheticsRunner(new SyntheticsRunnerConfig { SyntheticTestTimeout = TimeSpan.FromSeconds(3) })
-            .AddSyntheticsSesAlerting(new SesSyntheticsAlerterConfig // Add alerting via SES
+			// Add alerting of failures via Amazon SES
+            .AddSyntheticsSesAlerting(new SesSyntheticsAlerterConfig
             {
                 Recipients = new[] { "test@example.com" },
                 Sender = "synthetics@example.com"
