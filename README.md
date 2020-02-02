@@ -1,6 +1,12 @@
 # Ae.Synthetics ![https://www.nuget.org/packages/Ae.Synthetics](https://img.shields.io/nuget/v/Ae.Synthetics.svg)
 A bootstrapper for synthetic tests that are run on a schedule with metrics and alerting.
 
+## Summary
+* Run multiple testing `Task` (defined as C# `ISyntheticTest`) in parallel and alert on failure
+* Designed to be deployed to AWS Lambda and run on a CloudWatch schedule
+* Send alerts to Amazon SES or custom back-end via a generic `ISyntheticsAlerter` interface
+* Built-in logging for tests to make diagnosing failure easy (log messages are passed to alerters)
+
 ## Usage
 This package is designed for use with a scheduled AWS Lambda function, but can also be run as a console app.
 
