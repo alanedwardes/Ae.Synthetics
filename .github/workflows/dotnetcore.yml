@@ -14,4 +14,5 @@ jobs:
       with:
         dotnet-version: 3.1.405
     - name: Build and run tests
-      run: dotnet tests
+      run: dotnet test
+ 
