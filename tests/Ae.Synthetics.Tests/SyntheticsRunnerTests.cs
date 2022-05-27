@@ -3,6 +3,7 @@ using Ae.Synthetics.Runner;
 using Ae.Synthetics.Runner.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -73,7 +74,7 @@ namespace Ae.Synthetics.Tests
                 .AddSingleton<ISyntheticsAlerter>(testAlerter)
                 .BuildServiceProvider();
 
-            var runner = new SyntheticsRunner(provider, new SyntheticsRunnerConfig());
+            var runner = new SyntheticsRunner(new NullLogger<SyntheticsRunner>(), provider, new SyntheticsRunnerConfig());
 
             await runner.RunSyntheticTests(CancellationToken.None);
 
@@ -92,7 +93,7 @@ namespace Ae.Synthetics.Tests
                 .AddSingleton<ISyntheticsAlerter>(testAlerter)
                 .BuildServiceProvider();
 
-            var runner = new SyntheticsRunner(provider, new SyntheticsRunnerConfig
+            var runner = new SyntheticsRunner(new NullLogger<SyntheticsRunner>(), provider, new SyntheticsRunnerConfig
             {
                 SyntheticTestTimeout = TimeSpan.FromMilliseconds(500),
                 SyntheticTestCancellationGracePeriod = TimeSpan.FromMilliseconds(100)
@@ -114,7 +115,7 @@ namespace Ae.Synthetics.Tests
                 .AddSingleton<ISyntheticsAlerter>(testAlerter)
                 .BuildServiceProvider();
 
-            var runner = new SyntheticsRunner(provider, new SyntheticsRunnerConfig
+            var runner = new SyntheticsRunner(new NullLogger<SyntheticsRunner>(), provider, new SyntheticsRunnerConfig
             {
                 SyntheticTestTimeout = TimeSpan.FromMilliseconds(500)
             });
@@ -135,7 +136,7 @@ namespace Ae.Synthetics.Tests
                 .AddSingleton<ISyntheticsAlerter>(testAlerter)
                 .BuildServiceProvider();
 
-            var runner = new SyntheticsRunner(provider, new SyntheticsRunnerConfig
+            var runner = new SyntheticsRunner(new NullLogger<SyntheticsRunner>(), provider, new SyntheticsRunnerConfig
             {
                 SyntheticTestTimeout = TimeSpan.FromMilliseconds(500),
                 SyntheticTestCancellationGracePeriod = TimeSpan.FromMilliseconds(100)
@@ -158,7 +159,7 @@ namespace Ae.Synthetics.Tests
                 .AddSingleton<ISyntheticsAlerter>(testAlerter)
                 .BuildServiceProvider();
 
-            var runner = new SyntheticsRunner(provider, new SyntheticsRunnerConfig());
+            var runner = new SyntheticsRunner(new NullLogger<SyntheticsRunner>(), provider, new SyntheticsRunnerConfig());
 
             var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromMilliseconds(500));
 
