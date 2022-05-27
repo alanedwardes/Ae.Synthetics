@@ -1,6 +1,8 @@
 ﻿using Ae.Synthetics.Alerting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -10,11 +12,13 @@ namespace Ae.Synthetics.Runner.Internal
 {
     internal sealed class SyntheticsRunner : ISyntheticsRunner
     {
+        private readonly ILogger<SyntheticsRunner> _logger;
         private readonly IServiceProvider _serviceProvider;
         private readonly SyntheticsRunnerConfig _config;
 
-        public SyntheticsRunner(IServiceProvider serviceProvider, SyntheticsRunnerConfig config)
+        public SyntheticsRunner(ILogger<SyntheticsRunner> logger, IServiceProvider serviceProvider, SyntheticsRunnerConfig config)
         {
+            _logger = logger;
             _serviceProvider = serviceProvider;
             _config = config;
         }
@@ -82,11 +86,31 @@ namespace Ae.Synthetics.Runner.Internal
                 // Allow exceptions to propagate
                 await testTask;
 
-                await Task.WhenAll(alerters.Select(x => x.Success(testLogger.Entries, syntheticTest.GetType(), sw.Elapsed, token)));
+                await Task.WhenAll(alerters.Select(x => RunAlerter(x, syntheticTest, testLogger.Entries, sw.Elapsed, null, token)));
             }
             catch (Exception e)
             {
-                await Task.WhenAll(alerters.Select(x => x.Failure(testLogger.Entries, syntheticTest.GetType(), e, sw.Elapsed, token)));
+                _logger.LogWarning(e, "Exception from {Synthetic}", syntheticTest.GetType().Name);
+                await Task.WhenAll(alerters.Select(x => RunAlerter(x, syntheticTest, testLogger.Entries, sw.Elapsed, e, token)));
+            }
+        }
+
+        private async Task RunAlerter(ISyntheticsAlerter alerter, ISyntheticTest test, IReadOnlyList<string> entries, TimeSpan timeSpan, Exception exception, CancellationToken token)
+        {
+            try
+            {
+                if (exception == null)
+                {
+                    await alerter.Success(entries, test.GetType(), timeSpan, token);
+                }
+                else
+                {
+                    await alerter.Failure(entries, test.GetType(), exception, timeSpan, token);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Exception from {Alerter}", alerter.GetType().Name);
             }
         }
     }
