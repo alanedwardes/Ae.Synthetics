@@ -28,8 +28,8 @@ namespace Ae.Synthetics.Alerting.Ses
         {
             var point = PointData.Measurement("synthetic")
                         .Tag("source", source.Name)
-                        .Field("latency", time)
-                        .Field("success", success)
+                        .Field("latency", time.TotalMilliseconds)
+                        .Field("success", success ? 1 : 0)
                         .Timestamp(DateTime.UtcNow, WritePrecision.Ms);
 
             return _write.WritePointAsync(point, null, null, token);
