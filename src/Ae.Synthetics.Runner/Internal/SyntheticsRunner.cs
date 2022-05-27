@@ -81,10 +81,12 @@ namespace Ae.Synthetics.Runner.Internal
 
                 // Allow exceptions to propagate
                 await testTask;
+
+                await Task.WhenAll(alerters.Select(x => x.Success(testLogger.Entries, syntheticTest.GetType(), sw.Elapsed, token)));
             }
             catch (Exception e)
             {
-                await Task.WhenAll(alerters.Select(x => x.AlertFailure(testLogger.Entries, syntheticTest.GetType(), e, sw.Elapsed, token)));
+                await Task.WhenAll(alerters.Select(x => x.Failure(testLogger.Entries, syntheticTest.GetType(), e, sw.Elapsed, token)));
             }
         }
     }

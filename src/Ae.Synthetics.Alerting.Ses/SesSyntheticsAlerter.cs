@@ -21,7 +21,7 @@ namespace Ae.Synthetics.Alerting.Ses
             _config = config;
         }
 
-        public async Task AlertFailure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token)
+        public async Task Failure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token)
         {
             var html = new StringBuilder();
             html.AppendLine($"<p>Synthetic test <b>{source.Name}</b> failed with the following exception, in <b>{time.TotalSeconds}s</b>:</p>");
@@ -54,5 +54,7 @@ namespace Ae.Synthetics.Alerting.Ses
 
             await _simpleEmailService.SendEmailAsync(request, token);
         }
+
+        public Task Success(IReadOnlyList<string> logEntries, Type source, TimeSpan time, CancellationToken token) => Task.CompletedTask;
     }
 }

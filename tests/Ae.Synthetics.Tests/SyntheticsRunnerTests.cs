@@ -26,11 +26,18 @@ namespace Ae.Synthetics.Tests
 
         public class TestAlerter : ISyntheticsAlerter
         {
-            public bool DidAlert { get; private set; }
+            public bool DidFail { get; private set; }
+            public bool DidSucceed { get; private set; }
 
-            public Task AlertFailure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token)
+            public Task Failure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token)
             {
-                DidAlert = true;
+                DidFail = true;
+                return Task.CompletedTask;
+            }
+
+            public Task Success(IReadOnlyList<string> logEntries, Type source, TimeSpan time, CancellationToken token)
+            {
+                DidSucceed = true;
                 return Task.CompletedTask;
             }
         }
@@ -71,7 +78,8 @@ namespace Ae.Synthetics.Tests
             await runner.RunSyntheticTests(CancellationToken.None);
 
             Assert.True(testRunner.DidRun);
-            Assert.False(testAlerter.DidAlert);
+            Assert.True(testAlerter.DidSucceed);
+            Assert.False(testAlerter.DidFail);
         }
 
         [Fact]
@@ -92,7 +100,8 @@ namespace Ae.Synthetics.Tests
 
             await runner.RunSyntheticTests(CancellationToken.None);
 
-            Assert.True(testAlerter.DidAlert);
+            Assert.False(testAlerter.DidSucceed);
+            Assert.True(testAlerter.DidFail);
         }
 
         [Fact]
@@ -112,7 +121,8 @@ namespace Ae.Synthetics.Tests
 
             await runner.RunSyntheticTests(CancellationToken.None);
 
-            Assert.True(testAlerter.DidAlert);
+            Assert.False(testAlerter.DidSucceed);
+            Assert.True(testAlerter.DidFail);
         }
 
         [Fact]
@@ -133,7 +143,8 @@ namespace Ae.Synthetics.Tests
 
             await runner.RunSyntheticTests(CancellationToken.None);
 
-            Assert.True(testAlerter.DidAlert);
+            Assert.False(testAlerter.DidSucceed);
+            Assert.True(testAlerter.DidFail);
         }
 
         [Fact]
@@ -153,7 +164,8 @@ namespace Ae.Synthetics.Tests
 
             await runner.RunSyntheticTests(cancellationTokenSource.Token);
 
-            Assert.True(testAlerter.DidAlert);
+            Assert.False(testAlerter.DidSucceed);
+            Assert.True(testAlerter.DidFail);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Ae.Synthetics.Alerting
 {
     public interface ISyntheticsAlerter
     {
-        Task AlertFailure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token);
+        Task Failure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token);
+        Task Success(IReadOnlyList<string> logEntries, Type source, TimeSpan time, CancellationToken token);
     }
 }
