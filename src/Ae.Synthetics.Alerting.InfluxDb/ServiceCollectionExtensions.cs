@@ -8,7 +8,7 @@ namespace Ae.Synthetics.Alerting.Ses
     {
         public static IServiceCollection AddSyntheticsInfluxAlerting(this IServiceCollection services, Func<IServiceProvider, WriteApiAsync> config)
         {
-            return services.AddSingleton(provider => new InfluxSyntheticsAlerter(config(provider)));
+            return services.AddSingleton<ISyntheticsAlerter>(provider => new InfluxSyntheticsAlerter(config(provider)));
         }
     }
 }
