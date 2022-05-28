@@ -18,6 +18,8 @@ namespace Ae.Synthetics.Tests
         {
             public bool DidRun { get; private set; }
 
+            public string Name => "Name";
+
             public Task Run(ILogger logger, CancellationToken token)
             {
                 DidRun = true;
@@ -30,13 +32,13 @@ namespace Ae.Synthetics.Tests
             public bool DidFail { get; private set; }
             public bool DidSucceed { get; private set; }
 
-            public Task Failure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token)
+            public Task Failure(IReadOnlyList<string> logEntries, string source, Exception exception, TimeSpan time, CancellationToken token)
             {
                 DidFail = true;
                 return Task.CompletedTask;
             }
 
-            public Task Success(IReadOnlyList<string> logEntries, Type source, TimeSpan time, CancellationToken token)
+            public Task Success(IReadOnlyList<string> logEntries, string source, TimeSpan time, CancellationToken token)
             {
                 DidSucceed = true;
                 return Task.CompletedTask;
@@ -45,6 +47,8 @@ namespace Ae.Synthetics.Tests
 
         public class TestHangingSynchronousRunner : ISyntheticTest
         {
+            public string Name => "Name";
+
             public Task Run(ILogger logger, CancellationToken token)
             {
                 while (true)
@@ -55,11 +59,15 @@ namespace Ae.Synthetics.Tests
 
         public class TestCancellableAsynchronousRunner : ISyntheticTest
         {
+            public string Name => "Name";
+
             public async Task Run(ILogger logger, CancellationToken token) => await Task.Delay(-1, token);
         }
 
         public class TestHangingAsynchronousRunner : ISyntheticTest
         {
+            public string Name => "Name";
+
             public async Task Run(ILogger logger, CancellationToken token) => await Task.Delay(-1);
         }
 

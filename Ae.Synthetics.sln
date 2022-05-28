@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ae.Synthetics.Alerting.InfluxDb", "src\Ae.Synthetics.Alerting.InfluxDb\Ae.Synthetics.Alerting.InfluxDb.csproj", "{A673B8C8-CC34-4468-A2ED-76994AF799BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{54B6A682-C25C-467A-8721-12C08370376A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ae.Synthetics.Console", "misc\Ae.Synthetics.Console\Ae.Synthetics.Console.csproj", "{E3C2EBA6-D569-4DFB-BC39-58F576A5242D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,10 @@ Global
 		{A673B8C8-CC34-4468-A2ED-76994AF799BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A673B8C8-CC34-4468-A2ED-76994AF799BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A673B8C8-CC34-4468-A2ED-76994AF799BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3C2EBA6-D569-4DFB-BC39-58F576A5242D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3C2EBA6-D569-4DFB-BC39-58F576A5242D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3C2EBA6-D569-4DFB-BC39-58F576A5242D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3C2EBA6-D569-4DFB-BC39-58F576A5242D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +68,7 @@ Global
 		{DBD5FCB6-3AF2-46A6-96C5-A9CE957E9C01} = {529B8C1B-B710-472B-B1A5-10D2E65C17FB}
 		{9CB65871-8EA9-4CCA-8CFA-B80E4EDBE986} = {529B8C1B-B710-472B-B1A5-10D2E65C17FB}
 		{A673B8C8-CC34-4468-A2ED-76994AF799BA} = {529B8C1B-B710-472B-B1A5-10D2E65C17FB}
+		{E3C2EBA6-D569-4DFB-BC39-58F576A5242D} = {54B6A682-C25C-467A-8721-12C08370376A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A6EEBC4-CEAC-482B-83F1-2FF4287F7C73}

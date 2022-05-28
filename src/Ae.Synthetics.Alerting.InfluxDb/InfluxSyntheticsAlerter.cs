@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ae.Synthetics.Alerting.Ses
+namespace Ae.Synthetics.Alerting.InfluxDb
 {
     internal sealed class InfluxSyntheticsAlerter : ISyntheticsAlerter
     {
@@ -14,20 +14,20 @@ namespace Ae.Synthetics.Alerting.Ses
 
         public InfluxSyntheticsAlerter(WriteApiAsync write) => _write = write;
 
-        public Task Failure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token)
+        public Task Failure(IReadOnlyList<string> logEntries, string source, Exception exception, TimeSpan time, CancellationToken token)
         {
             return WritePoint(source, time, false, token);
         }
 
-        public Task Success(IReadOnlyList<string> logEntries, Type source, TimeSpan time, CancellationToken token)
+        public Task Success(IReadOnlyList<string> logEntries, string source, TimeSpan time, CancellationToken token)
         {
             return WritePoint(source, time, true, token);
         }
 
-        private Task WritePoint(Type source, TimeSpan time, bool success, CancellationToken token)
+        private Task WritePoint(string source, TimeSpan time, bool success, CancellationToken token)
         {
             var point = PointData.Measurement("synthetic")
-                        .Tag("source", source.Name)
+                        .Tag("source", source)
                         .Field("latency", time.TotalMilliseconds)
                         .Field("success", success ? 1 : 0)
                         .Timestamp(DateTime.UtcNow, WritePrecision.Ms);

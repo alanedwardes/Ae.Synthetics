@@ -11,4 +11,12 @@
     <PackageProjectUrl>https://github.com/alanedwardes/Ae.Synthetics</PackageProjectUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="SyntheticsLoggerAlerter.txt" />
+    <None Remove="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+  </ItemGroup>
 </Project>

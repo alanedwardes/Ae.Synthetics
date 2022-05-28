@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Ae.Synthetics.Alerting.Ses
+namespace Ae.Synthetics.Alerting.InfluxDb
 {
     public static class ServiceCollectionExtensions
     {

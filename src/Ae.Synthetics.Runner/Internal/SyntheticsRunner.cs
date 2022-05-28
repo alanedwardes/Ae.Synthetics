@@ -101,11 +101,11 @@ namespace Ae.Synthetics.Runner.Internal
             {
                 if (exception == null)
                 {
-                    await alerter.Success(entries, test.GetType(), timeSpan, token);
+                    await alerter.Success(entries, test.Name, timeSpan, token);
                 }
                 else
                 {
-                    await alerter.Failure(entries, test.GetType(), exception, timeSpan, token);
+                    await alerter.Failure(entries, test.Name, exception, timeSpan, token);
                 }
             }
             catch (Exception e)

@@ -1,0 +1,18 @@
+﻿{
+  "Interval": "00:00:10",
+  "Tests": [
+    {
+      "Type": "http",
+      "Configuration": {
+        "Name": "Example",
+        "RequestUri": "https://www.example.com/",
+        "ExpectedStatusCode": 200
+      }
+    }
+  ],
+  "Sinks": [
+    {
+      "Type": "logger"
+    }
+  ]
+}

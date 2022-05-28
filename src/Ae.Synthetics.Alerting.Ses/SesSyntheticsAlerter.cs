@@ -21,10 +21,10 @@ namespace Ae.Synthetics.Alerting.Ses
             _config = config;
         }
 
-        public async Task Failure(IReadOnlyList<string> logEntries, Type source, Exception exception, TimeSpan time, CancellationToken token)
+        public async Task Failure(IReadOnlyList<string> logEntries, string source, Exception exception, TimeSpan time, CancellationToken token)
         {
             var html = new StringBuilder();
-            html.AppendLine($"<p>Synthetic test <b>{source.Name}</b> failed with the following exception, in <b>{time.TotalSeconds}s</b>:</p>");
+            html.AppendLine($"<p>Synthetic test <b>{source}</b> failed with the following exception, in <b>{time.TotalSeconds}s</b>:</p>");
             html.AppendLine($"<pre>{exception.Demystify()}</pre>");
 
             if (logEntries.Any())
@@ -44,7 +44,7 @@ namespace Ae.Synthetics.Alerting.Ses
                 Destination = new Destination { ToAddresses = _config.Recipients.ToList() },
                 Message = new Message
                 {
-                    Subject = new Content($"Synthetic Test Failure: {source.Name}"),
+                    Subject = new Content($"Synthetic Test Failure: {source}"),
                     Body = new Body
                     {
                         Html = new Content(html.ToString())
@@ -55,6 +55,6 @@ namespace Ae.Synthetics.Alerting.Ses
             await _simpleEmailService.SendEmailAsync(request, token);
         }
 
-        public Task Success(IReadOnlyList<string> logEntries, Type source, TimeSpan time, CancellationToken token) => Task.CompletedTask;
+        public Task Success(IReadOnlyList<string> logEntries, string source, TimeSpan time, CancellationToken token) => Task.CompletedTask;
     }
 }
