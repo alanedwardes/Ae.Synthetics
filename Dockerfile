@@ -4,4 +4,6 @@ ADD build/output /opt/synthetics
 
 VOLUME ["/data"]
 
+WORKDIR /data
+
 ENTRYPOINT ["/opt/synthetics/Ae.Synthetics.Console"]
