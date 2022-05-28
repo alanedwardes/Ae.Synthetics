@@ -27,10 +27,7 @@ namespace Ae.Synthetics.Console
 
             var services = new ServiceCollection();
 
-            services.AddSyntheticsRunner(new SyntheticsRunnerConfig
-            {
-                SyntheticTestTimeout = TimeSpan.FromSeconds(15)
-            });
+            services.AddSyntheticsRunner(configuration.Runner);
 
             services.AddLogging(x => x.AddConsole());
 

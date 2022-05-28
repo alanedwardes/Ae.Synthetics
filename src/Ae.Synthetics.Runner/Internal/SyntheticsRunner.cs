@@ -38,7 +38,17 @@ namespace Ae.Synthetics.Runner.Internal
                 throw new InvalidOperationException($"No alerters found - register alerters against the interface {nameof(ISyntheticsAlerter)}.");
             }
 
-            await Task.WhenAll(syntheticTests.Select(x => RunSyntheticTest(x, alerters, token)));
+            if (_config.RunChecksInParallel)
+            {
+                await Task.WhenAll(syntheticTests.Select(x => RunSyntheticTest(x, alerters, token)));
+            }
+            else
+            {
+                foreach (var test in syntheticTests)
+                {
+                    await RunSyntheticTest(test, alerters, token);
+                }
+            }
         }
 
         public async Task RunSyntheticTestsForever(TimeSpan frequency, CancellationToken token)

@@ -6,6 +6,10 @@ namespace Ae.Synthetics.Runner
     public sealed class SyntheticsRunnerConfig
     {
         /// <summary>
+        /// If true, run the checks at the same time, if false sequentially.
+        /// </summary>
+        public bool RunChecksInParallel { get; set; } = true;
+        /// <summary>
         /// The amount of time each test is given to run to completion.
         /// </summary>
         public TimeSpan SyntheticTestTimeout { get; set; } = TimeSpan.FromSeconds(15);
