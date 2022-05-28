@@ -27,7 +27,12 @@ namespace Ae.Synthetics.Console
 
             var services = new ServiceCollection();
 
-            services.AddSyntheticsRunner(configuration.Runner);
+            services.AddSyntheticsRunner(new Runner.SyntheticsRunnerConfig
+            {
+                RunChecksInParallel = configuration.Runner.RunChecksInParallel,
+                SyntheticTestCancellationGracePeriod = configuration.Runner.SyntheticTestCancellationGracePeriod,
+                SyntheticTestTimeout = configuration.Runner.SyntheticTestTimeout
+            });
 
             services.AddLogging(x => x.AddConsole());
 
