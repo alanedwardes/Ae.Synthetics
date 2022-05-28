@@ -73,11 +73,12 @@ namespace Ae.Synthetics.Console
 
             services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
 
-            services.BuildServiceProvider()
-                    .GetRequiredService<ISyntheticsRunner>()
-                    .RunSyntheticTestsForever(configuration.Interval, CancellationToken.None)
-                    .GetAwaiter()
-                    .GetResult();
+            var provider = services.BuildServiceProvider();
+
+            provider.GetRequiredService<ILogger<Program>>().LogInformation(JsonSerializer.Serialize(configuration));
+
+            await provider.GetRequiredService<ISyntheticsRunner>()
+                .RunSyntheticTestsForever(configuration.Interval, CancellationToken.None);
         }
 
         private static void ConfigureInfluxDbSink(IServiceCollection services, InfluxDbSinkConfiguration configuration)
