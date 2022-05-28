@@ -54,7 +54,10 @@ namespace Ae.Synthetics.Console
                 switch (test.Type.ToLower())
                 {
                     case "http":
-                        ConfigureHttpTest(services, test.Configuration.Deserialize<HttpSyntheticTestConfiguration>());
+                        services.AddSingleton<ISyntheticTest>(x => new HttpSyntheticTest(x.GetRequiredService<IHttpClientFactory>(), test.Configuration.Deserialize<HttpSyntheticTestConfiguration>()));
+                        break;
+                    case "ping":
+                        services.AddSingleton<ISyntheticTest>(x => new PingSyntheticTest(test.Configuration.Deserialize<PingSyntheticTestConfiguration>()));
                         break;
                     default:
                         throw new InvalidOperationException($"Unknown test {test.Type}");
@@ -92,11 +95,6 @@ namespace Ae.Synthetics.Console
             var influxClient = InfluxDBClientFactory.Create(influxOptions);
 
             services.AddSyntheticsInfluxAlerting(provider => influxClient.GetWriteApiAsync());
-        }
-
-        private static void ConfigureHttpTest(IServiceCollection services, HttpSyntheticTestConfiguration configuration)
-        {
-            services.AddSingleton<ISyntheticTest>(x => new HttpSyntheticTest(x.GetRequiredService<IHttpClientFactory>(), configuration));
         }
     }
 }

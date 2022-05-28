@@ -4,9 +4,16 @@
     {
       "Type": "http",
       "Configuration": {
-        "Name": "Example",
+        "Name": "HTTP Example",
         "RequestUri": "https://www.example.com/",
         "ExpectedStatusCode": 200
+      }
+    },
+    {
+      "Type": "ping",
+      "Configuration": {
+        "Name": "Ping Google",
+        "Host": "8.8.8.8"
       }
     }
   ],
