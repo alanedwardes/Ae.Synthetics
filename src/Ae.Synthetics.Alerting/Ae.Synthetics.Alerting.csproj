@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.2.3</Version>
+    <Version>1.3.0</Version>
     <Description>A bootstrapper for synthetic tests that are run on a schedule with metrics and alerting.</Description>
     <Authors>alanedwardes</Authors>
     <WarningsAsErrors>true</WarningsAsErrors>
@@ -10,11 +10,6 @@
     <PackageIconUrl>https://avatars.githubusercontent.com/u/110954</PackageIconUrl>
     <PackageProjectUrl>https://github.com/alanedwardes/Ae.Synthetics</PackageProjectUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="SyntheticsLoggerAlerter.txt" />
-    <None Remove="Microsoft.Extensions.Logging.Abstractions" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
