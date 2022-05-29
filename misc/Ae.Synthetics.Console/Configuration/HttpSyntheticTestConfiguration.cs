@@ -7,7 +7,9 @@ namespace Ae.Synthetics.Console.Configuration
         public string Name { get; set; }
         public string Method { get; set; } = "GET";
         public Uri RequestUri { get; set; }
-        public int ExpectedStatusCode { get; set; }
+        public int ExpectedStatusCode { get; set; } = 200;
+        public bool AllowAutoRedirect { get; set; } = false;
+        public int RetryCount { get; set; } = 0;
     }
 }
 

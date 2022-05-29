@@ -19,17 +19,17 @@ namespace Ae.Synthetics.Console
             }
         }
 
-        public const string CLIENT_NAME = "SYNTHETICS";
-
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly HttpSyntheticTestConfiguration _configuration;
+        private readonly string clientName;
 
         public string Name => _configuration.Name;
 
-        public HttpSyntheticTest(IHttpClientFactory httpClientFactory, HttpSyntheticTestConfiguration configuration)
+        public HttpSyntheticTest(IHttpClientFactory httpClientFactory, HttpSyntheticTestConfiguration configuration, string clientName)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            this.clientName = clientName;
         }
 
         public async Task Run(ILogger logger, CancellationToken token)
@@ -38,7 +38,7 @@ namespace Ae.Synthetics.Console
 
             logger.LogInformation("Making request to {HttpMethod} {RequestUri}", _configuration.Method, _configuration.RequestUri);
 
-            using var client = _httpClientFactory.CreateClient(CLIENT_NAME);
+            using var client = _httpClientFactory.CreateClient(clientName);
 
             using var request = new HttpRequestMessage
             {

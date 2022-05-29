@@ -56,7 +56,7 @@ namespace Ae.Synthetics.Console
                 switch (test.Type.ToLower())
                 {
                     case "http":
-                        services.AddSingleton<ISyntheticTest>(x => new HttpSyntheticTest(x.GetRequiredService<IHttpClientFactory>(), test.Configuration.Deserialize<HttpSyntheticTestConfiguration>()));
+                        ConfigureHttpTest(services, test.Configuration.Deserialize<HttpSyntheticTestConfiguration>());
                         break;
                     case "ping":
                         services.AddSingleton<ISyntheticTest>(x => new PingSyntheticTest(test.Configuration.Deserialize<PingSyntheticTestConfiguration>()));
@@ -65,16 +65,6 @@ namespace Ae.Synthetics.Console
                         throw new InvalidOperationException($"Unknown test {test.Type}");
                 }
             }
-
-            services.AddHttpClient(HttpSyntheticTest.CLIENT_NAME)
-                    .ConfigurePrimaryHttpMessageHandler(x => new SocketsHttpHandler
-                    {
-                        AllowAutoRedirect = false
-                    })
-                    .AddTransientHttpErrorPolicy(x =>
-                    {
-                        return x.WaitAndRetryAsync(3, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)));
-                    });
 
             services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
 
@@ -98,6 +88,27 @@ namespace Ae.Synthetics.Console
             var influxClient = InfluxDBClientFactory.Create(influxOptions);
 
             services.AddSyntheticsInfluxAlerting(provider => influxClient.GetWriteApiAsync());
+        }
+
+        private static void ConfigureHttpTest(IServiceCollection services, HttpSyntheticTestConfiguration configuration)
+        {
+            var clientName = Guid.NewGuid().ToString();
+
+            var clientBuilder = services.AddHttpClient(clientName)
+                                        .ConfigurePrimaryHttpMessageHandler(x => new SocketsHttpHandler
+                                        {
+                                            AllowAutoRedirect = configuration.AllowAutoRedirect
+                                        });
+
+            if (configuration.RetryCount > 0)
+            {
+                clientBuilder.AddTransientHttpErrorPolicy(x =>
+                {
+                    return x.WaitAndRetryAsync(configuration.RetryCount, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)));
+                });
+            }
+
+            services.AddSingleton<ISyntheticTest>(x => new HttpSyntheticTest(x.GetRequiredService<IHttpClientFactory>(), configuration, clientName));
         }
     }
 }
