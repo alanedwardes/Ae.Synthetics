@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Ae.Synthetics.Console.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Http;
+using Ae.Synthetics.Alerting.Ses;
 
 namespace Ae.Synthetics.Console
 {
@@ -45,6 +46,9 @@ namespace Ae.Synthetics.Console
                         break;
                     case "logger":
                         services.AddSingleton<ISyntheticsAlerter>(x => new SyntheticsLoggerAlerter(x.GetRequiredService<ILogger<SyntheticsLoggerAlerter>>()));
+                        break;
+                    case "ses":
+                        services.AddSyntheticsSesAlerting(sink.Configuration.Deserialize<SesSyntheticsAlerterConfig>());
                         break;
                     default:
                         throw new InvalidOperationException($"Unknown sink {sink.Type}");
