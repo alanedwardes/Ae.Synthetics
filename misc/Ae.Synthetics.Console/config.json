@@ -1,25 +1,27 @@
-﻿{
-  "Interval": "00:00:10",
-  "Tests": [
-    {
-      "Type": "http",
-      "Configuration": {
-        "Name": "HTTP Example",
-        "RequestUri": "https://www.example.com/",
-        "ExpectedStatusCode": 200
+﻿[
+  {
+    "Interval": "00:00:10",
+    "Tests": [
+      {
+        "Type": "http",
+        "Configuration": {
+          "Name": "HTTP Example",
+          "RequestUri": "https://www.example.com/",
+          "ExpectedStatusCode": 200
+        }
+      },
+      {
+        "Type": "ping",
+        "Configuration": {
+          "Name": "Ping Google",
+          "Host": "8.8.8.8"
+        }
       }
-    },
-    {
-      "Type": "ping",
-      "Configuration": {
-        "Name": "Ping Google",
-        "Host": "8.8.8.8"
+    ],
+    "Sinks": [
+      {
+        "Type": "logger"
       }
-    }
-  ],
-  "Sinks": [
-    {
-      "Type": "logger"
-    }
-  ]
-}
+    ]
+  }
+]

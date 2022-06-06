@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ae.Synthetics.Console.Configuration
 {
-    public sealed class SyntheticsConfiguration
+	public sealed class SyntheticsConfiguration
 	{
 		public TimeSpan Interval { get; set; }
 		public SyntheticsRunnerConfig Runner { get; set; } = new SyntheticsRunnerConfig();
@@ -11,4 +11,3 @@ namespace Ae.Synthetics.Console.Configuration
 		public IList<SyntheticTestConfiguration> Tests { get; set; } = Array.Empty<SyntheticTestConfiguration>();
 	}
 }
-

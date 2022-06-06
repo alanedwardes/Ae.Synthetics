@@ -15,17 +15,17 @@ using Ae.Synthetics.Console.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Http;
 using Ae.Synthetics.Alerting.Ses;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Ae.Synthetics.Console
 {
     class Program
     {
-        static void Main(string[] args) => DoWork(args).GetAwaiter().GetResult();
+        static void Main() => DoWork().GetAwaiter().GetResult();
 
-        private static async Task DoWork(string[] args)
+        private static async Task StartRunner(SyntheticsConfiguration configuration)
         {
-            var configuration =  JsonSerializer.Deserialize<SyntheticsConfiguration>(await File.ReadAllTextAsync("config.json"));
-
             var services = new ServiceCollection();
 
             services.AddSyntheticsRunner(new Runner.SyntheticsRunnerConfig
@@ -78,6 +78,11 @@ namespace Ae.Synthetics.Console
 
             await provider.GetRequiredService<ISyntheticsRunner>()
                 .RunSyntheticTestsForever(configuration.Interval, CancellationToken.None);
+        }
+
+        private static async Task DoWork()
+        {
+            await Task.WhenAll(JsonSerializer.Deserialize<IList<SyntheticsConfiguration>>(await File.ReadAllTextAsync("config.json")).Select(StartRunner));
         }
 
         private static void ConfigureInfluxDbSink(IServiceCollection services, InfluxDbSinkConfiguration configuration)
