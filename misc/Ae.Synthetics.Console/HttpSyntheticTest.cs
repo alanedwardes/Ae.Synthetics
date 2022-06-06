@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using Ae.Synthetics.Console.Configuration;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Ae.Synthetics.Console
 {
@@ -51,6 +52,21 @@ namespace Ae.Synthetics.Console
             if (response.StatusCode != (HttpStatusCode)_configuration.ExpectedStatusCode)
             {
                 throw new HttpSyntheticTestException($"Expected status code {_configuration.ExpectedStatusCode}, got {response.StatusCode}");
+            }
+
+            var headers = response.Headers.Select(x => x).Concat(response.Content.Headers.Select(x => x)).ToArray();
+            foreach (var expectedHeader in _configuration.ExpectedHeaders)
+            {
+                var matchingHeaderValues = headers.Where(x => x.Key == expectedHeader.Key).SelectMany(x => x.Value).ToArray();
+                if (matchingHeaderValues.Length == 0)
+                {
+                    throw new HttpSyntheticTestException($"Expected header {expectedHeader.Key} in response, but it was not present");
+                }
+
+                if (!matchingHeaderValues.Any(x => x.Equals(expectedHeader.Value)))
+                {
+                    throw new HttpSyntheticTestException($"Expected header {expectedHeader.Key} to have value {expectedHeader.Value}, but got '{string.Join(",", matchingHeaderValues)}' instead");
+                }
             }
 
             logger.LogInformation("Completed request to {HttpMethod} {RequestUri} in {ElapsedMilliseconds}ms", _configuration.Method, _configuration.RequestUri, sw.ElapsedMilliseconds);

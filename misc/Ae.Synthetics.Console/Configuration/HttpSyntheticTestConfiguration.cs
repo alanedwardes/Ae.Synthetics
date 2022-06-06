@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ae.Synthetics.Console.Configuration
 {
@@ -10,6 +11,7 @@ namespace Ae.Synthetics.Console.Configuration
         public int ExpectedStatusCode { get; set; } = 200;
         public bool AllowAutoRedirect { get; set; } = false;
         public int RetryCount { get; set; } = 0;
+        public IDictionary<string, string> ExpectedHeaders { get; set; } = new Dictionary<string, string>();
     }
 }
 
