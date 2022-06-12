@@ -14,4 +14,3 @@ namespace Ae.Synthetics.Console.Configuration
         public IDictionary<string, string> ExpectedHeaders { get; set; } = new Dictionary<string, string>();
     }
 }
-

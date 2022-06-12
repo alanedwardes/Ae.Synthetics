@@ -19,6 +19,14 @@
           "Name": "Ping Google",
           "Host": "8.8.8.8"
         }
+      },
+      {
+        "Type": "tcp",
+        "Configuration": {
+          "Name": "Ping Google TCP",
+          "Host": "google.com",
+          "Port": 80
+        }
       }
     ],
     "Sinks": [

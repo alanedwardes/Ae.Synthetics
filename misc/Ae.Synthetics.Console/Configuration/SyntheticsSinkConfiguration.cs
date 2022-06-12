@@ -10,4 +10,3 @@ namespace Ae.Synthetics.Console.Configuration
 		public JsonElement Configuration { get; set; } = new JsonElement();
 	}
 }
-

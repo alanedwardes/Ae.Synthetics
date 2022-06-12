@@ -65,6 +65,9 @@ namespace Ae.Synthetics.Console
                     case "ping":
                         services.AddSingleton<ISyntheticTest>(x => new PingSyntheticTest(test.Configuration.Deserialize<PingSyntheticTestConfiguration>()));
                         break;
+                    case "tcp":
+                        services.AddSingleton<ISyntheticTest>(x => new TcpSyntheticTest(test.Configuration.Deserialize<TcpSyntheticTestConfiguration>()));
+                        break;
                     default:
                         throw new InvalidOperationException($"Unknown test {test.Type}");
                 }
@@ -122,4 +125,3 @@ namespace Ae.Synthetics.Console
         }
     }
 }
-

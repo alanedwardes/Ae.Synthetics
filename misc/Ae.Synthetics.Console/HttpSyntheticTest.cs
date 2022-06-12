@@ -73,4 +73,3 @@ namespace Ae.Synthetics.Console
         }
     }
 }
-

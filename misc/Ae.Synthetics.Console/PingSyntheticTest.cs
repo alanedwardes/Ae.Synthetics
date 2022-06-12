@@ -42,4 +42,3 @@ namespace Ae.Synthetics.Console
         }
     }
 }
-
