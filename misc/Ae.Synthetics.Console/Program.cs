@@ -85,7 +85,12 @@ namespace Ae.Synthetics.Console
 
         private static async Task DoWork()
         {
-            await Task.WhenAll(JsonSerializer.Deserialize<IList<SyntheticsConfiguration>>(await File.ReadAllTextAsync("config.json")).Select(StartRunner));
+            var settings = new JsonSerializerOptions
+            {
+                ReadCommentHandling = JsonCommentHandling.Skip
+            };
+
+            await Task.WhenAll(JsonSerializer.Deserialize<IList<SyntheticsConfiguration>>(await File.ReadAllTextAsync("config.json"), settings).Select(StartRunner));
         }
 
         private static void ConfigureInfluxDbSink(IServiceCollection services, InfluxDbSinkConfiguration configuration)
