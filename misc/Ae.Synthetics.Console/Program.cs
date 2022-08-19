@@ -112,7 +112,6 @@ namespace Ae.Synthetics.Console
             var clientName = Guid.NewGuid().ToString();
 
             var clientBuilder = services.AddHttpClient(clientName)
-                                        .SetHandlerLifetime(Timeout.InfiniteTimeSpan)
                                         .ConfigurePrimaryHttpMessageHandler(x => new SocketsHttpHandler
                                         {
                                             AllowAutoRedirect = configuration.AllowAutoRedirect
